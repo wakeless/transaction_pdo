@@ -3,7 +3,7 @@ TransactionPDO is a wrapper for the PDO object in PHP.
 It adds the ability to nest transactions as well as a nice syntax for writing transactions with a closure syntax.
 
 
-== Usage ==
+## Usage
 
     $db = new TransactionPDO($connectDSN);
 
@@ -28,10 +28,10 @@ It adds the ability to nest transactions as well as a nice syntax for writing tr
 
 
 
-== Thanks ==
+## Thanks
 
 Thanks go to Kenny Millington for his initial implementation here: [http://www.kennynet.co.uk/2008/12/02/php-pdo-nested-transactions/]
 
-== License ==
+## License
 
 [http://www.gnu.org/licenses/gpl-3.0-standalone.html](GNU General Public License v3.)
