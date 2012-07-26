@@ -30,8 +30,8 @@ It adds the ability to nest transactions as well as a nice syntax for writing tr
 
 ## Thanks
 
-Thanks go to Kenny Millington for his initial implementation here: [http://www.kennynet.co.uk/2008/12/02/php-pdo-nested-transactions/]
+Thanks go to Kenny Millington for his initial implementation here: http://www.kennynet.co.uk/2008/12/02/php-pdo-nested-transactions/
 
 ## License
 
-[http://www.gnu.org/licenses/gpl-3.0-standalone.html](GNU General Public License v3.)
+[GNU General Public License v3.](http://www.gnu.org/licenses/gpl-3.0-standalone.html)
