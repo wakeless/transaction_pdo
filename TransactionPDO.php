@@ -16,41 +16,47 @@ class TransactionPDO extends PDO {
   }
   
   function transaction($call) {
-    $this->beginTransaction();
+    if($this->beginTransaction()) {
+      try {
+        $ret = call_user_func($call);
+      } catch(Exception $e) {
+        $this->rollBack();
+        throw $e;
+      }
 
-    try {
-      $ret = call_user_func($call);
-    } catch(Exception $e) {
-      $this->rollBack();
-      throw $e;
-    }
+      if($ret) {
+        if(!$this->commit()) throw new Exception("Transaction was not committed.");
+      } else {
+        $this->rollBack();
+      }
 
-    if($ret) {
-      $this->commit();
+      return $ret;
     } else {
-      $this->rollBack();
+      throw new Exception("Transaction was not started.");
     }
-
-    return $ret;
   }
 
   public function beginTransaction() {
     
     if(!$this->nestable() || $this->transLevel == 0) {
-      parent::beginTransaction();
+      $ret = parent::beginTransaction();
+      $this->transLevel++;
+      return $ret;
     } else {
       $this->exec("SAVEPOINT LEVEL{$this->transLevel}");
+      $this->transLevel++;
+      return true;
     }
 
-    $this->transLevel++;
   }
 
   public function commit() {
     $this->transLevel--;
     if(!$this->nestable() || $this->transLevel == 0) {
-      parent::commit();
+      return parent::commit();
     } else {
       $this->exec("RELEASE SAVEPOINT LEVEL{$this->transLevel}");
+      return true;
     }
   }
 
@@ -58,9 +64,10 @@ class TransactionPDO extends PDO {
     $this->transLevel--;
 
     if(!$this->nestable() || $this->transLevel == 0) {
-      parent::rollBack();
+      return parent::rollBack();
     } else {
       $this->exec("ROLLBACK TO SAVEPOINT LEVEL{$this->transLevel}");
+      return true;
     }
   }
 }
